@@ -391,6 +391,70 @@
       </div>
     </section>
 
+    <!-- 8b · how models read context: attention -->
+    <section class="slide" data-part="02 · 主流模型的记忆架构">
+      <div class="inner stack-gap">
+        <div>
+          <div class="reveal kicker" style="margin-bottom:.7rem;">机制 · 模型怎么读上下文</div>
+          <h2 class="reveal s-title">它不是"倒着读"，是<em>越近权重越高</em></h2>
+        </div>
+        <div class="reveal grid g2">
+          <div class="card">
+            <span class="tag">① 上下文窗口 = 模型真正看到的</span>
+            <ul class="clean" style="margin-top:.55rem;gap:.42rem;font-size:clamp(.9rem,1.25vw,1.02rem);">
+              <li><span style="color:var(--faint);margin-right:.5em;">·</span>System Prompt / Developer Prompt</li>
+              <li><span style="color:var(--faint);margin-right:.5em;">·</span>最近的用户与 AI 对话</li>
+              <li><span style="color:var(--faint);margin-right:.5em;">·</span>召回的记忆（若产品支持）</li>
+              <li><span style="color:var(--faint);margin-right:.5em;">·</span>外部检索结果（RAG）</li>
+            </ul>
+            <p style="margin:.55rem 0 0;color:var(--faint);font-size:.85rem;">拼成一个 Prompt，一次性喂给模型。</p>
+          </div>
+          <div class="card">
+            <span class="tag">② 注意力：所有 token 同时参与</span>
+            <div style="margin-top:.55rem;display:flex;flex-direction:column;gap:.38rem;font-family:var(--mono);font-size:clamp(.82rem,1.12vw,.95rem);">
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>最近消息</span><span style="color:var(--accent);">★★★★★</span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>上一轮</span><span><span style="color:var(--accent);">★★★★</span><span style="color:var(--faint);">☆</span></span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>十几轮前</span><span><span style="color:var(--accent);">★★★</span><span style="color:var(--faint);">☆☆</span></span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>几十轮前</span><span><span style="color:var(--accent);">★★</span><span style="color:var(--faint);">☆☆☆</span></span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>窗口最前面</span><span><span style="color:var(--accent);">★</span><span style="color:var(--faint);">☆☆☆☆</span></span></div>
+            </div>
+            <p style="margin:.55rem 0 0;color:var(--faint);font-size:.85rem;">远距离信息利用率下降（Attention Dilution）。</p>
+          </div>
+        </div>
+        <p class="reveal lead" style="font-size:clamp(.9rem,1.25vw,1.02rem);max-width:none;">
+          <strong>KV Cache</strong>：已算过的轮次被缓存复用，新一轮只算最新输入，所以多轮聊天推理很快。
+        </p>
+      </div>
+    </section>
+
+    <!-- 8c · lost in the middle -> why recall -->
+    <section class="slide" data-part="02 · 主流模型的记忆架构">
+      <div class="inner stack-gap">
+        <div>
+          <div class="reveal kicker" style="margin-bottom:.7rem;">长上下文的真相</div>
+          <h2 class="reveal s-title">窗口再大，<em>中间最容易被忽略</em></h2>
+        </div>
+        <div class="reveal grid g2">
+          <div class="card">
+            <span class="tag">Lost in the Middle</span>
+            <div style="margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem;font-family:var(--mono);font-size:clamp(.85rem,1.2vw,1rem);">
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>开头（含 System Prompt）</span><span style="color:var(--accent);">★★★★★</span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>中间</span><span><span style="color:var(--accent);">★★</span><span style="color:var(--faint);">☆☆☆</span></span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem;"><span>结尾（最近消息）</span><span style="color:var(--accent);">★★★★★</span></div>
+            </div>
+            <p style="margin:.7rem 0 0;color:var(--dim);font-size:.9rem;">200 万 token 理论上都能看到，但中间会被稀释；开头与结尾权重天然更高。</p>
+          </div>
+          <div class="card" style="display:flex;flex-direction:column;justify-content:center;border-color:var(--accent-line);background:var(--accent-soft);">
+            <span class="tag" style="color:var(--accent);">所以呢</span>
+            <p style="margin:.45rem 0 0;font-size:clamp(1rem,1.5vw,1.2rem);line-height:1.5;">
+              与其把一切塞进窗口、赌它注意到，不如只把<strong>最相关的记忆</strong>精准召回，放进模型最看重的位置。
+            </p>
+            <p style="margin:.65rem 0 0;color:var(--accent-2);font-weight:600;">这正是 OpenLynx 召回要解决的：让前馈更精准。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 9 · DIVIDER 03 -->
     <section class="slide divider" data-part="">
       <div class="inner">
@@ -672,7 +736,7 @@
 </div>
 
 <div class="controls">
-  <span class="count" id="count">01 / 24</span>
+  <span class="count" id="count">01 / 26</span>
   <div class="nav">
     <button id="prev" aria-label="上一张">‹</button>
     <button id="next" aria-label="下一张">›</button>
