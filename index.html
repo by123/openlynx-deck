@@ -137,6 +137,16 @@
   table.cmp td.v .tick{font-size:.95em;}
   table.cmp tr:first-child td{border-top:none;}
 
+  /* 3-column head-to-head (vendor memory vs OpenLynx) */
+  table.vs{width:100%; border-collapse:collapse; font-size:clamp(.84rem,1.15vw,.99rem);}
+  table.vs th{text-align:left; font-family:var(--mono); font-size:.7rem; letter-spacing:.14em;
+    text-transform:uppercase; font-weight:500; color:var(--faint); padding:0 .9rem .72rem;}
+  table.vs td{padding:.56rem .9rem; border-top:1px solid var(--border); vertical-align:top; line-height:1.4;}
+  table.vs .c0{width:16%; color:var(--dim); white-space:nowrap;}
+  table.vs .c1{width:40%; color:var(--faint);}
+  table.vs td.c2{width:44%; color:var(--text); background:var(--accent-soft);}
+  table.vs th.c2{width:44%; color:var(--accent); background:var(--accent-soft);}
+
   /* divider slide */
   .divider .inner{max-width:980px;}
   .divider .big{font-size:clamp(4.5rem,16vw,13rem); line-height:.9;
@@ -500,6 +510,27 @@
       </div>
     </section>
 
+    <!-- 11b · head-to-head: vendor memory vs OpenLynx -->
+    <section class="slide" data-part="03 · 为什么自己搭">
+      <div class="inner stack-gap">
+        <div>
+          <div class="reveal kicker" style="margin-bottom:.7rem;">对照 · 厂商记忆 vs OpenLynx</div>
+          <h2 class="reveal s-title">不替代它们，而是把记忆变成<em>可控的工程资产</em></h2>
+        </div>
+        <table class="vs reveal">
+          <tr><th class="c0">维度</th><th class="c1">Claude / ChatGPT 记忆</th><th class="c2">OpenLynx</th></tr>
+          <tr><td class="c0">规则注入</td><td class="c1">CLAUDE.md：每次固定注入的规则</td><td class="c2">不替代，按语义<strong>补充</strong>相关规则</td></tr>
+          <tr><td class="c0">对话沉淀</td><td class="c1">把历史总结成偏好 / 事实</td><td class="c2">类似，但<strong>面向工程</strong>（决策、踩坑、约定）</td></tr>
+          <tr><td class="c0">可管理性</td><td class="c1">黑盒，难查改，易积<strong>脏数据</strong></td><td class="c2">可<strong>浏览 / 打标 / 删除 / 合并</strong></td></tr>
+          <tr><td class="c0">跨工具</td><td class="c1">锁死在单一产品</td><td class="c2">Claude Code + Codex <strong>共享一份</strong></td></tr>
+          <tr><td class="c0">存储所有权</td><td class="c1">厂商云端</td><td class="c2"><strong>本地优先</strong>，云是你自己的 Turso</td></tr>
+          <tr><td class="c0">可视化</td><td class="c1">几乎没有</td><td class="c2">本地 <strong>Web UI</strong>：卡片 + 召回历史</td></tr>
+          <tr><td class="c0">召回方式</td><td class="c1">厂商黑盒自动</td><td class="c2">语义 Top-K + 阈值 + Goal，<strong>可调</strong></td></tr>
+          <tr><td class="c0">工程复盘</td><td class="c1">弱</td><td class="c2"><strong>每日小结</strong>，按目标聚焦</td></tr>
+        </table>
+      </div>
+    </section>
+
     <!-- 12 · DIVIDER 04 -->
     <section class="slide divider" data-part="">
       <div class="inner">
@@ -736,7 +767,7 @@
 </div>
 
 <div class="controls">
-  <span class="count" id="count">01 / 26</span>
+  <span class="count" id="count">01 / 27</span>
   <div class="nav">
     <button id="prev" aria-label="上一张">‹</button>
     <button id="next" aria-label="下一张">›</button>
